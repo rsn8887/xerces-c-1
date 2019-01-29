@@ -573,15 +573,16 @@ time_t XMLDateTime::getEpoch(bool duration) const
         t.tm_mon=getMonth()-1;
         t.tm_year=getYear()-1900;
         t.tm_isdst=0;
-#if defined(HAVE_TIMEGM)
-        return timegm(&t);
-#elif defined(WIN32)
-        // Windows
-        return mktime(&t) - _timezone;
-#else
-        // Hopefully most others...?
-        return mktime(&t) - timezone;
-#endif
+//#if defined(HAVE_TIMEGM)
+//        return timegm(&t);
+//#elif defined(WIN32)
+//        // Windows
+//        return mktime(&t) - _timezone;
+//#else
+//        // Hopefully most others...?
+//        return mktime(&t) - timezone;
+//#endif
+        return mktime(&t);
     }
 }
 

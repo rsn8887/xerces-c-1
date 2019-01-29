@@ -27,12 +27,12 @@
 #	include <config.h>
 #endif
 
-#if !HAVE_STRICMP
+//#if !HAVE_STRICMP
 #	include <stricmp.h>
-#endif
-#if !HAVE_STRNICMP
+//#endif
+//#if !HAVE_STRNICMP
 #	include <strnicmp.h>
-#endif
+//#endif
 
 #include <string.h>
 #include <ctype.h>

@@ -39,6 +39,9 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/util/XMLUniDefs.hpp>
 
+#ifdef __SWITCH__
+#include <string> 
+#endif
 
 XERCES_CPP_NAMESPACE_BEGIN
 
@@ -194,6 +197,18 @@ PosixFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const manag
     char* newSrc = XMLString::transcode(srcPath, manager);
     ArrayJanitor<char> janText(newSrc, manager);
 
+#ifdef __SWITCH__
+    XMLCh* ret;
+    if (newSrc[4] == ':') {
+        ret = XMLString::transcode(newSrc, manager);
+    }
+    else {
+        std::string realpath = std::string(".") + newSrc;
+        ret = XMLString::transcode(realpath.c_str(), manager);
+    }
+	return ret;
+#else
+
 #if HAVE_PATH_MAX
     // Use a local buffer that is big enough for the largest legal path
     char absPath[PATH_MAX + 1];
@@ -213,6 +228,7 @@ PosixFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const manag
     free(absPath);
 #endif
     return ret;
+#endif
 }
 
 
