@@ -203,7 +203,7 @@ PosixFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const manag
         ret = XMLString::transcode(newSrc, manager);
     }
     else {
-        std::string realpath = std::string(".") + newSrc;
+        std::string realpath = std::string("/switch/enigma") + newSrc;
         ret = XMLString::transcode(realpath.c_str(), manager);
     }
 	return ret;
@@ -235,6 +235,10 @@ PosixFileMgr::getFullPath(const XMLCh* const srcPath, MemoryManager* const manag
 XMLCh*
 PosixFileMgr::getCurrentDirectory(MemoryManager* const manager)
 {
+#ifdef __SWITCH__
+	XMLCh* ret = XMLString::transcode("/switch/enigma", manager);
+	return ret;
+#else
 #if HAVE_PATH_MAX
     char dirBuf[PATH_MAX + 2];
     char *curDir = getcwd(&dirBuf[0], PATH_MAX + 1);
@@ -251,6 +255,7 @@ PosixFileMgr::getCurrentDirectory(MemoryManager* const manager)
     free(curDir);
 #endif
     return ret;
+#endif
 }
 
 
